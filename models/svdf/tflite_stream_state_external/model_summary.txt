@@ -1,0 +1,215 @@
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_audio (InputLayer)       [(1, 320)]           0           []                               
+                                                                                                  
+ speech_features (SpeechFeature  (1, 1, 40)          0           ['input_audio[0][0]']            
+ s)                                                                                               
+                                                                                                  
+ svdf_0 (Svdf)                  (1, 1, 40)           1400        ['speech_features[0][0]']        
+                                                                                                  
+ svdf_1 (Svdf)                  (1, 1, 40)           2952        ['svdf_0[0][0]']                 
+                                                                                                  
+ svdf_2 (Svdf)                  (1, 1, 64)           3744        ['svdf_1[0][0]']                 
+                                                                                                  
+ svdf_3 (Svdf)                  (1, 1, 64)           4512        ['svdf_2[0][0]']                 
+                                                                                                  
+ svdf_4 (Svdf)                  (1, 1, 64)           8960        ['svdf_3[0][0]']                 
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/E  [(1, 1, 1, 40)]     0           ['speech_features[0][0]']        
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/E  [(1, 1, 1, 40)]     0           ['svdf_0[0][0]']                 
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/E  [(1, 1, 1, 40)]     0           ['svdf_1[0][0]']                 
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/E  [(1, 1, 1, 64)]     0           ['svdf_2[0][0]']                 
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/E  [(1, 1, 1, 64)]     0           ['svdf_3[0][0]']                 
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/E  [(1, 1, 1, 64)]     0           ['svdf_4[0][0]']                 
+ xpandDims (TensorFlowOpLayer)                                                                    
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/d  [(1, 40)]           0           ['tf_op_layer_streaming/svdf_0/Ex
+ ense_12/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/d  [(1, 40)]           0           ['tf_op_layer_streaming/svdf_1/Ex
+ ense_14/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/d  [(1, 40)]           0           ['tf_op_layer_streaming/svdf_2/Ex
+ ense_16/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/d  [(1, 64)]           0           ['tf_op_layer_streaming/svdf_3/Ex
+ ense_18/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/d  [(1, 64)]           0           ['tf_op_layer_streaming/svdf_4/Ex
+ ense_20/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/d  [(1, 64)]           0           ['tf_op_layer_streaming/svdf_5/Ex
+ ense_22/Tensordot/Reshape (Ten                                  pandDims[0][0]']                 
+ sorFlowOpLayer)                                                                                  
+                                                                                                  
+ svdf_5 (Svdf)                  (1, 1, 128)          9600        ['svdf_4[0][0]']                 
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/d  [(1, 16)]           0           ['tf_op_layer_streaming/svdf_0/de
+ ense_12/Tensordot/MatMul (Tens                                  nse_12/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/d  [(1, 32)]           0           ['tf_op_layer_streaming/svdf_1/de
+ ense_14/Tensordot/MatMul (Tens                                  nse_14/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/d  [(1, 32)]           0           ['tf_op_layer_streaming/svdf_2/de
+ ense_16/Tensordot/MatMul (Tens                                  nse_16/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/d  [(1, 32)]           0           ['tf_op_layer_streaming/svdf_3/de
+ ense_18/Tensordot/MatMul (Tens                                  nse_18/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/d  [(1, 64)]           0           ['tf_op_layer_streaming/svdf_4/de
+ ense_20/Tensordot/MatMul (Tens                                  nse_20/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/d  [(1, 128)]          0           ['tf_op_layer_streaming/svdf_5/de
+ ense_22/Tensordot/MatMul (Tens                                  nse_22/Tensordot/Reshape[0][0]'] 
+ orFlowOpLayer)                                                                                   
+                                                                                                  
+ stream_6 (Stream)              (1, 128)             0           ['svdf_5[0][0]']                 
+                                                                                                  
+ data_frame_1input_state (Input  [(1, 640)]          0           []                               
+ Layer)                                                                                           
+                                                                                                  
+ lambda_16 (Lambda)             (1, 320)             0           ['input_audio[0][0]']            
+                                                                                                  
+ stream_7/ExternalState (InputL  [(1, 3, 1, 16)]     0           []                               
+ ayer)                                                                                            
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/d  [(1, 1, 1, 16)]     0           ['tf_op_layer_streaming/svdf_0/de
+ ense_12/Tensordot (TensorFlowO                                  nse_12/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_8/ExternalState (InputL  [(1, 9, 1, 32)]     0           []                               
+ ayer)                                                                                            
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/d  [(1, 1, 1, 32)]     0           ['tf_op_layer_streaming/svdf_1/de
+ ense_14/Tensordot (TensorFlowO                                  nse_14/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_9/ExternalState (InputL  [(1, 9, 1, 32)]     0           []                               
+ ayer)                                                                                            
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/d  [(1, 1, 1, 32)]     0           ['tf_op_layer_streaming/svdf_2/de
+ ense_16/Tensordot (TensorFlowO                                  nse_16/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_10/ExternalState (Input  [(1, 9, 1, 32)]     0           []                               
+ Layer)                                                                                           
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/d  [(1, 1, 1, 32)]     0           ['tf_op_layer_streaming/svdf_3/de
+ ense_18/Tensordot (TensorFlowO                                  nse_18/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_11/ExternalState (Input  [(1, 9, 1, 64)]     0           []                               
+ Layer)                                                                                           
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/d  [(1, 1, 1, 64)]     0           ['tf_op_layer_streaming/svdf_4/de
+ ense_20/Tensordot (TensorFlowO                                  nse_20/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_12/ExternalState (Input  [(1, 9, 1, 128)]    0           []                               
+ Layer)                                                                                           
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/d  [(1, 1, 1, 128)]    0           ['tf_op_layer_streaming/svdf_5/de
+ ense_22/Tensordot (TensorFlowO                                  nse_22/Tensordot/MatMul[0][0]']  
+ pLayer)                                                                                          
+                                                                                                  
+ stream_6/ExternalState (InputL  [(1, 1, 128)]       0           []                               
+ ayer)                                                                                            
+                                                                                                  
+ dropout (Dropout)              (1, 128)             0           ['stream_6[0][0]']               
+                                                                                                  
+ tf_op_layer_streaming/speech_f  [(1, 320)]          0           ['data_frame_1input_state[0][0]']
+ eatures/data_frame_1/strided_s                                                                   
+ lice (TensorFlowOpLayer)                                                                         
+                                                                                                  
+ lambda_15 (Lambda)             (1, 320)             0           ['lambda_16[0][0]']              
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/s  [(1, 4, 1, 16)]     0           ['stream_7/ExternalState[0][0]', 
+ tream_7/concat (TensorFlowOpLa                                   'tf_op_layer_streaming/svdf_0/de
+ yer)                                                            nse_12/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/s  [(1, 10, 1, 32)]    0           ['stream_8/ExternalState[0][0]', 
+ tream_8/concat (TensorFlowOpLa                                   'tf_op_layer_streaming/svdf_1/de
+ yer)                                                            nse_14/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/s  [(1, 10, 1, 32)]    0           ['stream_9/ExternalState[0][0]', 
+ tream_9/concat (TensorFlowOpLa                                   'tf_op_layer_streaming/svdf_2/de
+ yer)                                                            nse_16/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/s  [(1, 10, 1, 32)]    0           ['stream_10/ExternalState[0][0]',
+ tream_10/concat (TensorFlowOpL                                   'tf_op_layer_streaming/svdf_3/de
+ ayer)                                                           nse_18/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/s  [(1, 10, 1, 64)]    0           ['stream_11/ExternalState[0][0]',
+ tream_11/concat (TensorFlowOpL                                   'tf_op_layer_streaming/svdf_4/de
+ ayer)                                                           nse_20/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/s  [(1, 10, 1, 128)]   0           ['stream_12/ExternalState[0][0]',
+ tream_12/concat (TensorFlowOpL                                   'tf_op_layer_streaming/svdf_5/de
+ ayer)                                                           nse_22/Tensordot[0][0]']         
+                                                                                                  
+ tf_op_layer_streaming/stream_6  [(1, 0, 128)]       0           ['stream_6/ExternalState[0][0]'] 
+ /strided_slice (TensorFlowOpLa                                                                   
+ yer)                                                                                             
+                                                                                                  
+ dense_11 (Dense)               (1, 12)              1548        ['dropout[0][0]']                
+                                                                                                  
+ tf_op_layer_streaming/speech_f  [(1, 640)]          0           ['tf_op_layer_streaming/speech_fe
+ eatures/data_frame_1/concat (T                                  atures/data_frame_1/strided_slice
+ ensorFlowOpLayer)                                               [0][0]',                         
+                                                                  'lambda_15[0][0]']              
+                                                                                                  
+ tf_op_layer_streaming/svdf_0/s  [(1, 3, 1, 16)]     0           ['tf_op_layer_streaming/svdf_0/st
+ tream_7/strided_slice (TensorF                                  ream_7/concat[0][0]']            
+ lowOpLayer)                                                                                      
+                                                                                                  
+ tf_op_layer_streaming/svdf_1/s  [(1, 9, 1, 32)]     0           ['tf_op_layer_streaming/svdf_1/st
+ tream_8/strided_slice (TensorF                                  ream_8/concat[0][0]']            
+ lowOpLayer)                                                                                      
+                                                                                                  
+ tf_op_layer_streaming/svdf_2/s  [(1, 9, 1, 32)]     0           ['tf_op_layer_streaming/svdf_2/st
+ tream_9/strided_slice (TensorF                                  ream_9/concat[0][0]']            
+ lowOpLayer)                                                                                      
+                                                                                                  
+ tf_op_layer_streaming/svdf_3/s  [(1, 9, 1, 32)]     0           ['tf_op_layer_streaming/svdf_3/st
+ tream_10/strided_slice (Tensor                                  ream_10/concat[0][0]']           
+ FlowOpLayer)                                                                                     
+                                                                                                  
+ tf_op_layer_streaming/svdf_4/s  [(1, 9, 1, 64)]     0           ['tf_op_layer_streaming/svdf_4/st
+ tream_11/strided_slice (Tensor                                  ream_11/concat[0][0]']           
+ FlowOpLayer)                                                                                     
+                                                                                                  
+ tf_op_layer_streaming/svdf_5/s  [(1, 9, 1, 128)]    0           ['tf_op_layer_streaming/svdf_5/st
+ tream_12/strided_slice (Tensor                                  ream_12/concat[0][0]']           
+ FlowOpLayer)                                                                                     
+                                                                                                  
+ tf_op_layer_streaming/stream_6  [(1, 1, 128)]       0           ['tf_op_layer_streaming/stream_6/
+ /concat (TensorFlowOpLayer)                                     strided_slice[0][0]',            
+                                                                  'svdf_5[0][0]']                 
+                                                                                                  
+==================================================================================================
+Total params: 32,716
+Trainable params: 32,716
+Non-trainable params: 0
+__________________________________________________________________________________________________
