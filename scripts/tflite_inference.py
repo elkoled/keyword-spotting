@@ -119,7 +119,7 @@ def inference_stream(model_path, audio_dir):
                 print(out_tflite_argmax)
                 print(index_to_label(out_tflite_argmax))
 
-def inference_stream_mic_input(model_path, audio_device):
+def inference_stream_mic_input(model_path, mic_amp_factor, in_device, out_device):
     # load model
     interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
@@ -131,18 +131,18 @@ def inference_stream_mic_input(model_path, audio_device):
                          channels=1,
                          rate=16000,
                          output=True,
-                         output_device_index=4
+                         output_device_index=out_device
                          )
 
     # Create a PyAudio object
     p = pyaudio.PyAudio()
     # Open an audio stream
-    stream = p.open(format=pyaudio.paFloat32, channels=1, rate=16000, input=True, output=False, input_device_index=audio_device)
+    stream = p.open(format=pyaudio.paFloat32, channels=1, rate=16000, input=True, output=False, input_device_index=in_device)
     # Start the stream
     stream.start_stream()
 
-    time_start = time.time()
     buffer = []
+    old_label = ""
     # Read audio data from the stream
     while True:
         # Read 320 samples from the stream
@@ -150,8 +150,9 @@ def inference_stream_mic_input(model_path, audio_device):
         # Convert the data to a NumPy array
         samples = np.frombuffer(data, dtype=np.float32)
         #amplify the audio
-        samples = samples *2
+        samples = samples * mic_amp_factor
 
+        # monitoring of mic input
         ####################
         data = samples.astype(np.float32).tobytes()
         out.write(data)
@@ -168,9 +169,12 @@ def inference_stream_mic_input(model_path, audio_device):
         out_tflite_argmax = np.argmax(out_tflite)
 
         buffer.append(index_to_label(out_tflite_argmax))
-        if len(buffer) > 20:
+        if len(buffer) > 50:
             buffer.pop(0)
-        print(Counter(buffer).most_common(1)[0][0])
+        new_label = Counter(buffer).most_common(1)[0][0]
+        if new_label != old_label:
+            print(new_label)
+            old_label = new_label
 
 
     # Stop the stream
@@ -188,14 +192,21 @@ def list_devices():
 
 #main function
 if __name__ == '__main__':
-    curr_dir = os.getcwd()
-    MODEL_PATH_NON_STREAM = os.path.join(curr_dir, 'svdf', "tflite_non_stream", "non_stream.tflite")
-    MODEL_PATH_STREAM = os.path.join(curr_dir, 'svdf', "stream_state_internal", "model.tflite")
-    LABEL_PATH = os.path.join(curr_dir, "svdf", "labels.txt")
-    AUDIO_DIR = os.path.join(curr_dir, "audio")
+    MAIN_DIR = os.path.dirname(os.path.dirname(__file__))
+    MODELS_DIR = os.path.join(MAIN_DIR, "models")
+    AUDIO_DIR = os.path.join(MAIN_DIR, "audio")
+    # model paths
+    MODEL_PATH_NON_STREAM = os.path.join(MODELS_DIR, 'svdf', "tflite_non_stream", "non_stream.tflite")
+    MODEL_PATH_STREAM = os.path.join(MODELS_DIR, 'svdf', "stream_state_internal", "stream_state_internal.tflite")
+    LABEL_PATH_SVDF = os.path.join(MODELS_DIR, "svdf", "labels.txt")
 
-#   inference_non_stream(MODEL_PATH_NON_STREAM, AUDIO_DIR)
-#   inference_stream(MODEL_PATH_STREAM, AUDIO_DIR)
-    # list_devices()
-    inference_stream_mic_input(MODEL_PATH_STREAM, audio_device=2)
+    print(list_devices())
+    in_device = int(input("Enter microphone device ID: "))
+    out_device = int(input("Enter speaker device ID: "))
+    mic_amp_factor = int(input("Enter microphone amplification factor: "))
 
+    
+
+    # inference_non_stream(MODEL_PATH_NON_STREAM, AUDIO_DIR)
+    # inference_stream(MODEL_PATH_STREAM, AUDIO_DIR)
+    inference_stream_mic_input(MODEL_PATH_STREAM, mic_amp_factor, in_device, out_device)
