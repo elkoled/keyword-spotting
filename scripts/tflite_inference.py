@@ -7,7 +7,7 @@ import scipy.signal
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import pyaudio
-from collections import Counter
+from collections import Counter, deque
 import time
 
 def waveread_as_pcm16(filename):
@@ -259,6 +259,70 @@ def inference_non_stream_mic_input(model_path, label_path, in_device, out_device
     p.terminate()
     k.terminate()
 
+def inference_non_stream_rolling_window_mic_input(model_path, label_path, in_device, out_device, mic_amp_factor):
+    # Load model
+    interpreter = tf.lite.Interpreter(model_path=model_path)
+    interpreter.allocate_tensors()
+
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    # Load labels
+    label_dict = load_labels(label_path)
+    print(label_dict)
+
+    # Initialize PyAudio
+    k = pyaudio.PyAudio()
+    out = k.open(format=pyaudio.paFloat32,
+                 channels=1,
+                 rate=16000,
+                 output=True,
+                 output_device_index=out_device)
+
+    # Create a PyAudio object
+    p = pyaudio.PyAudio()
+    stream = p.open(format=pyaudio.paFloat32,
+                    channels=1,
+                    rate=16000,
+                    input=True,
+                    output=False,
+                    input_device_index=in_device)
+
+    stream.start_stream()
+
+    # Initialize sample_buffer as a deque with a maximum length of 16000
+    sample_buffer = deque(maxlen=16000)
+
+    while True:
+        data = stream.read(640)
+        samples = np.frombuffer(data, dtype=np.float32)
+        samples = samples * mic_amp_factor  # Amplify the audio
+
+        # Extend the deque with new samples
+        sample_buffer.extend(samples)
+
+        # Monitoring of mic input
+        out.write(samples.astype(np.float32).tobytes())
+
+        # If sample_buffer is not full, pad with zeros
+        if len(sample_buffer) < 16000:
+            input_samples = np.pad(sample_buffer, (0, 16000 - len(sample_buffer)), 'constant', constant_values=(0, 0))
+        else:
+            input_samples = np.array(sample_buffer)
+
+        # Run inference on the 1-second chunk
+        input_data = np.expand_dims(input_samples, 0)
+        interpreter.set_tensor(input_details[0]['index'], input_data.astype(np.float32))
+        interpreter.invoke()
+        out_tflite = interpreter.get_tensor(output_details[0]['index'])
+        out_tflite_argmax = np.argmax(out_tflite)
+
+        print(label_dict.get(out_tflite_argmax, "INVALID"))
+
+    # Stop the stream
+    stream.stop_stream()
+    p.terminate()
+    k.terminate()
 
 def list_devices():
     p = pyaudio.PyAudio()
@@ -283,7 +347,7 @@ if __name__ == '__main__':
     in_device = int(input("Enter microphone device ID: "))
     out_device = int(input("Enter speaker device ID: "))
     mic_amp_factor = int(input("Enter microphone amplification factor: "))
-    model_type = int(input("Enter model type (0: stream / 1: non_stream): "))
+    model_type = int(input("Enter model type (0: stream / 1: non_stream / 2: non_stream_rolling_window): "))
 
     # inference_stream(MODEL_PATH_STREAM, LABEL_PATH_STREAM, AUDIO_DIR)
     # inference_non_stream(MODEL_PATH_NON_STREAM, LABEL_PATH_NON_STREAM, AUDIO_DIR)
@@ -291,3 +355,5 @@ if __name__ == '__main__':
         inference_stream_mic_input(MODEL_PATH_STREAM, LABEL_PATH_STREAM, in_device, out_device, mic_amp_factor)
     elif model_type == 1:
         inference_non_stream_mic_input(MODEL_PATH_NON_STREAM, LABEL_PATH_NON_STREAM, in_device, out_device, mic_amp_factor)
+    elif model_type == 2:
+        inference_non_stream_rolling_window_mic_input(MODEL_PATH_NON_STREAM, LABEL_PATH_NON_STREAM, in_device, out_device, mic_amp_factor)
