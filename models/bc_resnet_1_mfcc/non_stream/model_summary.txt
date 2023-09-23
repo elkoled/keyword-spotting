@@ -1,0 +1,82 @@
+Model: "model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(1, 16000)]              0         
+                                                                 
+ speech_features (SpeechFeat  (1, 98, 40)              0         
+ ures)                                                           
+                                                                 
+ tf_op_layer_ExpandDims (Ten  [(1, 98, 40, 1)]         0         
+ sorFlowOpLayer)                                                 
+                                                                 
+ conv2d (Conv2D)             (1, 98, 20, 16)           416       
+                                                                 
+ transition_block (Transitio  (1, 98, 20, 8)           464       
+ nBlock)                                                         
+                                                                 
+ normal_block (NormalBlock)  (1, 98, 20, 8)            304       
+                                                                 
+ normal_block_1 (NormalBlock  (1, 98, 20, 8)           304       
+ )                                                               
+                                                                 
+ transition_block_1 (Transit  (1, 98, 10, 12)          648       
+ ionBlock)                                                       
+                                                                 
+ normal_block_2 (NormalBlock  (1, 98, 10, 12)          504       
+ )                                                               
+                                                                 
+ normal_block_3 (NormalBlock  (1, 98, 10, 12)          504       
+ )                                                               
+                                                                 
+ transition_block_2 (Transit  (1, 98, 5, 16)           992       
+ ionBlock)                                                       
+                                                                 
+ normal_block_4 (NormalBlock  (1, 98, 5, 16)           736       
+ )                                                               
+                                                                 
+ normal_block_5 (NormalBlock  (1, 98, 5, 16)           736       
+ )                                                               
+                                                                 
+ normal_block_6 (NormalBlock  (1, 98, 5, 16)           736       
+ )                                                               
+                                                                 
+ normal_block_7 (NormalBlock  (1, 98, 5, 16)           736       
+ )                                                               
+                                                                 
+ transition_block_3 (Transit  (1, 98, 5, 20)           1400      
+ ionBlock)                                                       
+                                                                 
+ normal_block_8 (NormalBlock  (1, 98, 5, 20)           1000      
+ )                                                               
+                                                                 
+ normal_block_9 (NormalBlock  (1, 98, 5, 20)           1000      
+ )                                                               
+                                                                 
+ normal_block_10 (NormalBloc  (1, 98, 5, 20)           1000      
+ k)                                                              
+                                                                 
+ normal_block_11 (NormalBloc  (1, 98, 5, 20)           1000      
+ k)                                                              
+                                                                 
+ depthwise_conv2d_32 (Depthw  (1, 98, 5, 20)           520       
+ iseConv2D)                                                      
+                                                                 
+ tf_op_layer_Mean (TensorFlo  [(1, 98, 1, 20)]         0         
+ wOpLayer)                                                       
+                                                                 
+ conv2d_21 (Conv2D)          (1, 98, 1, 32)            640       
+                                                                 
+ global_average_pooling2d (G  (1, 1, 1, 32)            0         
+ lobalAveragePooling2D)                                          
+                                                                 
+ conv2d_22 (Conv2D)          (1, 1, 1, 12)             384       
+                                                                 
+ tf_op_layer_Squeeze (Tensor  [(1, 12)]                0         
+ FlowOpLayer)                                                    
+                                                                 
+=================================================================
+Total params: 14,024
+Trainable params: 11,032
+Non-trainable params: 2,992
+_________________________________________________________________

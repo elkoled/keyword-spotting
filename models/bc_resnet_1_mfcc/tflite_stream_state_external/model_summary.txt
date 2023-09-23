@@ -1,0 +1,88 @@
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_audio (InputLayer)       [(1, 160)]           0           []                               
+                                                                                                  
+ speech_features (SpeechFeature  (1, 1, 40)          0           ['input_audio[0][0]']            
+ s)                                                                                               
+                                                                                                  
+ tf_op_layer_ExpandDims (Tensor  (1, 1, 40, 1)       0           ['speech_features[0][0]']        
+ FlowOpLayer)                                                                                     
+                                                                                                  
+ conv2d (Conv2D)                (1, 1, 20, 16)       416         ['tf_op_layer_ExpandDims[0][0]'] 
+                                                                                                  
+ transition_block (TransitionBl  (1, 1, 20, 8)       464         ['conv2d[0][0]']                 
+ ock)                                                                                             
+                                                                                                  
+ normal_block (NormalBlock)     (1, 1, 20, 8)        304         ['transition_block[0][0]']       
+                                                                                                  
+ normal_block_1 (NormalBlock)   (1, 1, 20, 8)        304         ['normal_block[0][0]']           
+                                                                                                  
+ transition_block_1 (Transition  (1, 1, 10, 12)      648         ['normal_block_1[0][0]']         
+ Block)                                                                                           
+                                                                                                  
+ normal_block_2 (NormalBlock)   (1, 1, 10, 12)       504         ['transition_block_1[0][0]']     
+                                                                                                  
+ normal_block_3 (NormalBlock)   (1, 1, 10, 12)       504         ['normal_block_2[0][0]']         
+                                                                                                  
+ transition_block_2 (Transition  (1, 1, 5, 16)       992         ['normal_block_3[0][0]']         
+ Block)                                                                                           
+                                                                                                  
+ normal_block_4 (NormalBlock)   (1, 1, 5, 16)        736         ['transition_block_2[0][0]']     
+                                                                                                  
+ normal_block_5 (NormalBlock)   (1, 1, 5, 16)        736         ['normal_block_4[0][0]']         
+                                                                                                  
+ normal_block_6 (NormalBlock)   (1, 1, 5, 16)        736         ['normal_block_5[0][0]']         
+                                                                                                  
+ normal_block_7 (NormalBlock)   (1, 1, 5, 16)        736         ['normal_block_6[0][0]']         
+                                                                                                  
+ transition_block_3 (Transition  (1, 1, 5, 20)       1400        ['normal_block_7[0][0]']         
+ Block)                                                                                           
+                                                                                                  
+ normal_block_8 (NormalBlock)   (1, 1, 5, 20)        1000        ['transition_block_3[0][0]']     
+                                                                                                  
+ normal_block_9 (NormalBlock)   (1, 1, 5, 20)        1000        ['normal_block_8[0][0]']         
+                                                                                                  
+ normal_block_10 (NormalBlock)  (1, 1, 5, 20)        1000        ['normal_block_9[0][0]']         
+                                                                                                  
+ normal_block_11 (NormalBlock)  (1, 1, 5, 20)        1000        ['normal_block_10[0][0]']        
+                                                                                                  
+ depthwise_conv2d_32 (Depthwise  (1, 1, 5, 20)       520         ['normal_block_11[0][0]']        
+ Conv2D)                                                                                          
+                                                                                                  
+ tf_op_layer_Mean (TensorFlowOp  (1, 1, 1, 20)       0           ['depthwise_conv2d_32[0][0]']    
+ Layer)                                                                                           
+                                                                                                  
+ conv2d_21 (Conv2D)             (1, 1, 1, 32)        640         ['tf_op_layer_Mean[0][0]']       
+                                                                                                  
+ global_average_pooling2d (Glob  (1, 1, 1, 32)       0           ['conv2d_21[0][0]']              
+ alAveragePooling2D)                                                                              
+                                                                                                  
+ data_frame_1input_state (Input  [(1, 480)]          0           []                               
+ Layer)                                                                                           
+                                                                                                  
+ lambda_9 (Lambda)              (1, 160)             0           ['input_audio[0][0]']            
+                                                                                                  
+ conv2d_22 (Conv2D)             (1, 1, 1, 12)        384         ['global_average_pooling2d[0][0]'
+                                                                 ]                                
+                                                                                                  
+ tf_op_layer_streaming/speech_f  [(1, 320)]          0           ['data_frame_1input_state[0][0]']
+ eatures/data_frame_1/strided_s                                                                   
+ lice (TensorFlowOpLayer)                                                                         
+                                                                                                  
+ lambda_8 (Lambda)              (1, 160)             0           ['lambda_9[0][0]']               
+                                                                                                  
+ tf_op_layer_Squeeze (TensorFlo  (1, 12)             0           ['conv2d_22[0][0]']              
+ wOpLayer)                                                                                        
+                                                                                                  
+ tf_op_layer_streaming/speech_f  [(1, 480)]          0           ['tf_op_layer_streaming/speech_fe
+ eatures/data_frame_1/concat (T                                  atures/data_frame_1/strided_slice
+ ensorFlowOpLayer)                                               [0][0]',                         
+                                                                  'lambda_8[0][0]']               
+                                                                                                  
+==================================================================================================
+Total params: 14,024
+Trainable params: 11,032
+Non-trainable params: 2,992
+__________________________________________________________________________________________________
